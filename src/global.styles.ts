@@ -1,13 +1,13 @@
 /* eslint-disable camelcase */
-import Error from "../assets/icons/error.svg";
-import Success from "../assets/icons/success.svg";
+import Error from "./assets/icons/error.svg";
+import Success from "./assets/icons/success.svg";
 import styled, { createGlobalStyle, css } from "styled-components";
 
 type DivisorType = {
   retreat?: number;
 };
 
-export const GlobalStyles = createGlobalStyle`
+export default createGlobalStyle`
   :root {
     font-size: 62.5%;
 
@@ -80,8 +80,6 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2, h3, h4,h5, h6, strong {
-    
-
     font-weight: 600;
   }
 

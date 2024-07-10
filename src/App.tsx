@@ -1,5 +1,5 @@
+import GlobalStyles from "./global.styles";
 import { Router } from "./router";
-import { GlobalStyles } from "./styles/global.styles";
 
 function App() {
   return (
