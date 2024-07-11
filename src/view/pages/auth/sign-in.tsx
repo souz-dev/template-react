@@ -28,7 +28,8 @@ export function SignIn() {
   const { signIn, error } = useAuth();
 
   const onSubmit = (data: SignInFormValues) => {
-    signIn(data);
+    const { email, password } = data;
+    signIn({ email, password, captcha: "123456" });
   };
 
   return (
