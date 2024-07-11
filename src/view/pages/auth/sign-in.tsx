@@ -7,10 +7,13 @@ import * as S from "./styles";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../app/hooks/useAuth";
+import useAuthStore from "../../../app/store/auth-store";
+import { useMutation } from "@tanstack/react-query";
+import { ISignInParams } from "../../../app/service/auth-service/sign-in";
+import { authService } from "../../../app/service/auth-service";
 
 const signInSchema = z.object({
-  email: z.string().min(1, "Email é obrigatório").email("Email inválido"),
+  login: z.string().min(1, "Email é obrigatório").email("Email inválido"),
   password: z.string().min(1, "Senha é obrigatória"),
 });
 
@@ -19,28 +22,40 @@ type SignInFormValues = z.infer<typeof signInSchema>;
 export function SignIn() {
   const {
     register,
-    handleSubmit,
+    handleSubmit: hookFormSubmit,
     formState: { errors },
   } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
   });
 
-  const { signIn, error } = useAuth();
+  const signIn = useAuthStore((state) => state.signIn);
 
-  const onSubmit = (data: SignInFormValues) => {
-    const { email, password } = data;
-    signIn({ email, password, captcha: "123456" });
-  };
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: async (data: ISignInParams) => {
+      return authService.signIn(data);
+    },
+  });
+
+  const handleSubmit = hookFormSubmit(async (data) => {
+    try {
+      const { user } = await mutateAsync(data);
+
+      signIn(user);
+    } catch (error) {
+      console.log(error);
+      // toast.error('Credenciais inválidas!')
+    }
+  });
 
   return (
     <Card title="Sign In">
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormGroup label="Sign In" error={errors.email && errors.email.message}>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup label="Sign In" error={errors.login && errors.login.message}>
           <Input
             fullWidth
             type="text"
             placeholder="usuario, número de telefone ou email"
-            {...register("email")}
+            {...register("login")}
           />
         </FormGroup>
         <FormGroup
@@ -56,12 +71,11 @@ export function SignIn() {
             fullWidth
             type="submit"
             // disabled={!viewRecaptcha && !hasToken}
-            // loading={loading}
+            loading={isPending}
           >
             {"Entrar"}
           </S.SubmitButton>
         </S.SpaceBetween>
-        {error && <p>{error}</p>}
       </Form>
     </Card>
   );

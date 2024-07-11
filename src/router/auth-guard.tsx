@@ -8,7 +8,7 @@ interface IAuthGuardProps {
 
 export function AuthGuard({ isPrivate }: IAuthGuardProps) {
   //   const { signedIn } = useAuth()
-  const { signedIn } = useAuthStore();
+  const signedIn = useAuthStore((state) => state.signedIn);
 
   console.log(signedIn);
   console.log(isPrivate);

@@ -1,18 +1,19 @@
-import { create, StateCreator } from "zustand";
-import { persist, PersistOptions, StateStorage } from "zustand/middleware";
-import nookies from "nookies";
-import { ISignInParams } from "../service/auth-service/sign-in";
-import { authService } from "../service/auth-service";
+import { create } from "zustand";
 import { IUser } from "../entities/user";
-import { isTokenExpired } from "../utils";
+import { createJSONStorage, persist, StateStorage } from "zustand/middleware";
+import nookies from "nookies";
 
 interface AuthState {
   user: IUser | null;
-  error: string | null;
   signedIn: boolean;
-  signIn: (params: ISignInParams) => Promise<void>;
+  signIn: (params: IUser) => void;
   signOut: () => void;
 }
+
+const initialValues = {
+  signedIn: false,
+  user: null,
+};
 
 const nookiesStorage: StateStorage = {
   getItem: (key) => {
@@ -27,41 +28,19 @@ const nookiesStorage: StateStorage = {
   },
 };
 
-interface MyPersist {
-  (
-    config: StateCreator<AuthState>,
-    options: PersistOptions<AuthState>
-  ): StateCreator<AuthState>;
-}
-
-const useAuthStore = create<AuthState>(
-  (persist as MyPersist)(
+export const useAuthStore = create<AuthState>()(
+  persist(
     (set) => ({
-      user: null,
-      error: null,
-      signedIn: false,
-      signIn: async ({ login, password }: ISignInParams) => {
-        try {
-          const { token, user } = await authService.signIn({ login, password });
-          console.log("storeToken", { token });
-          if (!isTokenExpired(token)) {
-            set({ user, error: null, signedIn: true });
-            nookies.set(null, "auth-token", token, { path: "/" });
-          } else {
-            set({ error: "Token expirado", signedIn: false });
-          }
-        } catch (error) {
-          set({ error: "Erro desconhecido", signedIn: false });
-        }
+      ...initialValues,
+      signIn: (user: IUser) => {
+        console.log("chamou");
+        return set({ signedIn: true, user });
       },
-      signOut: () => {
-        set({ user: null, signedIn: false });
-        nookies.destroy(null, "auth-token", { path: "/" });
-      },
+      signOut: () => set(initialValues),
     }),
     {
-      name: "auth-storage",
-      getStorage: () => nookiesStorage,
+      name: "AuthStore",
+      storage: createJSONStorage(() => nookiesStorage),
     }
   )
 );
