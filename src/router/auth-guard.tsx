@@ -1,4 +1,4 @@
-import useAuthStore from "@/app/store/auth-store";
+import useAuthStore from "../app/store/auth-store";
 import { Navigate, Outlet } from "react-router-dom";
 // import { useAuth } from '../app/hooks/use-auth'
 
@@ -10,6 +10,8 @@ export function AuthGuard({ isPrivate }: IAuthGuardProps) {
   //   const { signedIn } = useAuth()
   const { signedIn } = useAuthStore();
 
+  console.log(signedIn);
+  console.log(isPrivate);
   if (!signedIn && isPrivate) {
     return <Navigate to="/login" replace />;
   }

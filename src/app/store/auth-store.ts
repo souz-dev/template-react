@@ -43,6 +43,7 @@ const useAuthStore = create<AuthState>(
       signIn: async ({ login, password }: ISignInParams) => {
         try {
           const { token, user } = await authService.signIn({ login, password });
+          console.log("storeToken", { token });
           if (!isTokenExpired(token)) {
             set({ user, error: null, signedIn: true });
             nookies.set(null, "auth-token", token, { path: "/" });

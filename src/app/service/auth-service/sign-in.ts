@@ -17,5 +17,6 @@ export async function signIn(params: ISignInParams) {
     params
   );
 
+  console.log({ data });
   return data;
 }
