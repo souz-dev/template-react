@@ -14,6 +14,10 @@ export function Router() {
             <Route path="/login/forgot-password" element={<ForgotPassword />} />
           </Route>
         </Route>
+
+        <Route element={<AuthGuard isPrivate />}>
+          <Route path="/" />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,3 @@
-// app/store/authStore.ts
 import { create, StateCreator } from "zustand";
 import { persist, PersistOptions, StateStorage } from "zustand/middleware";
 import nookies from "nookies";
@@ -10,7 +9,8 @@ import { isTokenExpired } from "../utils";
 interface AuthState {
   user: IUser | null;
   error: string | null;
-  signIn: (maparams: ISignInParams) => Promise<void>;
+  signedIn: boolean;
+  signIn: (params: ISignInParams) => Promise<void>;
   signOut: () => void;
 }
 
@@ -39,29 +39,27 @@ const useAuthStore = create<AuthState>(
     (set) => ({
       user: null,
       error: null,
-      signIn: async ({ login, password }) => {
+      signedIn: false,
+      signIn: async ({ login, password }: ISignInParams) => {
         try {
-          const { token, user } = await authService.signIn({
-            login,
-            password,
-          });
+          const { token, user } = await authService.signIn({ login, password });
           if (!isTokenExpired(token)) {
-            set({ user, error: null });
+            set({ user, error: null, signedIn: true });
             nookies.set(null, "auth-token", token, { path: "/" });
           } else {
-            set({ error: "Token expirado" });
+            set({ error: "Token expirado", signedIn: false });
           }
         } catch (error) {
-          set({ error: "Erro desconhecido" });
+          set({ error: "Erro desconhecido", signedIn: false });
         }
       },
       signOut: () => {
-        set({ user: null });
+        set({ user: null, signedIn: false });
         nookies.destroy(null, "auth-token", { path: "/" });
       },
     }),
     {
-      name: "auth-storage", // Nome da chave do storage local
+      name: "auth-storage",
       getStorage: () => nookiesStorage,
     }
   )
