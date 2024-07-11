@@ -1,6 +1,6 @@
 // app/store/authStore.ts
-import { create } from "zustand";
-import { persist, StateStorage } from "zustand/middleware";
+import { create, StateCreator } from "zustand";
+import { persist, PersistOptions, StateStorage } from "zustand/middleware";
 import nookies from "nookies";
 import { ISignInParams } from "../service/auth-service/sign-in";
 import { authService } from "../service/auth-service";
@@ -27,8 +27,15 @@ const nookiesStorage: StateStorage = {
   },
 };
 
+interface MyPersist {
+  (
+    config: StateCreator<AuthState>,
+    options: PersistOptions<AuthState>
+  ): StateCreator<AuthState>;
+}
+
 const useAuthStore = create<AuthState>(
-  persist(
+  (persist as MyPersist)(
     (set) => ({
       user: null,
       error: null,

@@ -7,7 +7,7 @@ export interface ISignInParams {
   captcha: string;
 }
 
-interface ISignInResponse {
+export interface ISignInResponse {
   user: IUser;
   token: string;
 }
