@@ -39,12 +39,11 @@ const useAuthStore = create<AuthState>(
     (set) => ({
       user: null,
       error: null,
-      signIn: async ({ login, captcha, senha }) => {
+      signIn: async ({ login, password }) => {
         try {
           const { token, user } = await authService.signIn({
             login,
-            captcha,
-            senha,
+            password,
           });
           if (!isTokenExpired(token)) {
             set({ user, error: null });

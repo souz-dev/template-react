@@ -3,8 +3,7 @@ import { httpClient } from "../https-client";
 
 export interface ISignInParams {
   login: string;
-  senha: string;
-  captcha: string;
+  password: string;
 }
 
 export interface ISignInResponse {

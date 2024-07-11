@@ -8,13 +8,12 @@ export const useAuth = () => {
     mutationFn: async ({
       email,
       password,
-      captcha,
     }: {
       email: string;
       password: string;
       captcha: string;
     }) => {
-      return await signIn({ login: email, senha: password, captcha });
+      return await signIn({ login: email, password });
     },
     onError: (error) => {
       // Lidar com erros aqui
