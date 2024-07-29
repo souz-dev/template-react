@@ -10,8 +10,6 @@ export function AuthGuard({ isPrivate }: IAuthGuardProps) {
   //   const { signedIn } = useAuth()
   const signedIn = useAuthStore((state) => state.signedIn);
 
-  console.log(signedIn);
-  console.log(isPrivate);
   if (!signedIn && isPrivate) {
     return <Navigate to="/login" replace />;
   }

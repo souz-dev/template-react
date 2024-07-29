@@ -29,7 +29,7 @@ export const NavLinks = styled(NavLink)`
 `;
 const Icon = styled.div`
   margin-right: 1.4rem;
-  font-size: 2rem;
+  font-size: 1.8rm;
 `;
 
 export const Newest = styled.div`
@@ -50,7 +50,7 @@ export const NavBtn = styled.div<INavBtn>`
   padding: 1.5rem 2rem;
   text-decoration: none;
   display: flex;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   align-items: center;
   justify-content: left;
   margin: 0.4rem 1rem;
@@ -93,14 +93,14 @@ export const SubMenu = styled.div<ISubMenu>`
   width: 100%;
   /* background: #00000029; */
   overflow: hidden;
-  height: ${({ opened, tall = 1 }) => (opened ? tall * 59 + 20 : 0)}px;
-  padding: ${({ opened }) => (opened ? "1rem 0px" : "0px")};
+  height: ${({ opened, tall = 1 }) => (opened ? tall * 35 + 20 : 0)}px;
+  /* padding: ${({ opened }) => (opened ? "1rem 0px" : "0px")}; */
   margin: 0.2rem 0 0.2rem;
 `;
 
 export const Sublinks = styled(NavLink)`
   padding: 0.6rem 2rem;
-  height: 5.5rem !important;
+  height: 3.5rem !important;
   text-decoration: none;
   display: flex;
   align-items: center;

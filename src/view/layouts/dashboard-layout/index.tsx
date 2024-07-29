@@ -6,8 +6,8 @@ import {
   SidebarContainer,
 } from "./styles";
 import { Header } from "../../components/header";
-import { Main } from "../../components/main";
 import UseIsCollapsed from "../../../app/store/isCollapsed-store";
+import { Outlet } from "react-router-dom";
 
 export function DashboardLayout() {
   const { isCollapsed } = UseIsCollapsed();
@@ -21,7 +21,7 @@ export function DashboardLayout() {
         <Header />
       </HeaderContainer>
       <MainContainer>
-        <Main />
+        <Outlet />
       </MainContainer>
     </Container>
   );

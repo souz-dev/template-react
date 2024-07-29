@@ -24,5 +24,7 @@ export const HeaderContainer = styled.div`
 
 export const MainContainer = styled.div`
   grid-area: main;
+  padding: 1.5rem 2rem;
+  max-width: 100%;
   transition: width 1s;
 `;
