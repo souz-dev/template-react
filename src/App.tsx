@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import GlobalStyles from "./global.styles";
 import { Router } from "./router";
-
+import "@fortawesome/fontawesome-free/css/all.min.css";
 function App() {
   const queryClient = new QueryClient();
   return (

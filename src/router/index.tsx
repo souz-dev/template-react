@@ -3,6 +3,8 @@ import { AuthLayout } from "../view/layouts/auth-layout";
 import { SignIn } from "../view/pages/auth/sign-in";
 import { ForgotPassword } from "../view/pages/auth/recover-passworld";
 import { AuthGuard } from "./auth-guard";
+import { DashboardLayout } from "../view/layouts/dashboard-layout";
+import { NumberChip } from "../view/pages/whatssApp/numberchip";
 
 export function Router() {
   return (
@@ -16,7 +18,9 @@ export function Router() {
         </Route>
 
         <Route element={<AuthGuard isPrivate />}>
-          <Route path="/" />
+          <Route path="/" element={<DashboardLayout />}>
+            <Route path="/whatssApp/numberchip" element={<NumberChip />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

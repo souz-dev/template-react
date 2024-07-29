@@ -1,6 +1,6 @@
 import { ICompany } from "./company";
 
-export interface IUser {
+export interface IUserRespoonse {
   id?: string;
   nome?: string;
   empresas?: ICompany[];
@@ -9,4 +9,8 @@ export interface IUser {
   ativo?: boolean;
   funcao?: string;
   dataNascimento?: string;
+}
+export interface IUser {
+  user: IUserRespoonse;
+  token: string;
 }

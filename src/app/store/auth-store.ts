@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { IUser } from "../entities/user";
 import { createJSONStorage, persist, StateStorage } from "zustand/middleware";
-import nookies from "nookies";
 
 interface AuthState {
   user: IUser | null;
@@ -15,17 +14,10 @@ const initialValues = {
   user: null,
 };
 
-const nookiesStorage: StateStorage = {
-  getItem: (key) => {
-    const cookies = nookies.get();
-    return cookies[key] ? JSON.stringify(cookies[key]) : null;
-  },
-  setItem: (key, value) => {
-    nookies.set(null, key, JSON.parse(value), { path: "/" });
-  },
-  removeItem: (key) => {
-    nookies.destroy(null, key, { path: "/" });
-  },
+const localStorage: StateStorage = {
+  getItem: (key) => window.localStorage.getItem(key),
+  setItem: (key, value) => window.localStorage.setItem(key, value),
+  removeItem: (key) => window.localStorage.removeItem(key),
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -40,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "AuthStore",
-      storage: createJSONStorage(() => nookiesStorage),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

@@ -1,4 +1,4 @@
-import { IUser } from "@/app/entities/user";
+import { IUserRespoonse } from "@/app/entities/user";
 import { httpClient } from "../https-client";
 
 export interface ISignInParams {
@@ -7,7 +7,7 @@ export interface ISignInParams {
 }
 
 export interface ISignInResponse {
-  user: IUser;
+  user: IUserRespoonse;
   token: string;
 }
 
